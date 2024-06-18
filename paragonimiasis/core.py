@@ -34,3 +34,17 @@ def test_model(clf, X_test, y_test):
         'mcc': mcc(clf, X_test, y_test),
         'confusion_matrix': build_confusion_matrix(clf, X_test, y_test),
     }
+
+def learn(df, classifier, model_params):
+    report = Report(df.columns, classifier)
+
+    kept_features = ['Sex_of_the_study_participant']
+    remaining_features = report._columns
+
+    clf, X, y_true = build_svm(df, kept_features, classifier, model_params)
+    result = test_model(clf, X, y_true)
+    report.record(cols, result)
+
+    return report
+
+
