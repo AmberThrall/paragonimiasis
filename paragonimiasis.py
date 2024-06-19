@@ -1,9 +1,30 @@
 from paragonimiasis import *
+import pprint
 
 CLASSIFIER = 'Result_of_ELISA_test'
-MODEL_PARAMS = {
-    'kernel': 'linear',
+TEST_PARAMS = {
+    'linear': [{ 'C': np.linspace(1, 25, num=6), 'kernel': ['linear'] }],
+    'rbf': [{ 
+        'C': np.linspace(1, 25, num=6), 
+        'kernel': ['rbf'],  
+        'gamma': np.linspace(0.001, 0.01, num=10),
+    }],
 }
+
+def print_report(report):
+    print("\n-------")
+    print("Report:")
+    print("-------")
+    print("Accuracy: {}".format(report['accuracy']))
+    print("MCC: {}".format(report['mcc']))
+    print("Confusion Matrix:")
+    print(report['confusion_matrix'])
+    print("Selected Parameters:")
+    params = pd.Series(report['best_params'])
+    print(params)
+    print("Selected Parameters:")
+    for feat in report['selected_features']:
+        print(" - {}".format(str(feat)))
 
 def main():
     print("Loading in data...", end='')
@@ -11,17 +32,10 @@ def main():
     #df = df[['Result_of_ELISA_test', 'Age_of_the_study_participant', 'Height_of_the_study_participant_in_Cms']].copy()
     print("Done!")
 
-    print("Training...")
-    model, report = learn(df, CLASSIFIER, MODEL_PARAMS)
-
-    print("\nReport:")
-    print("-------")
-    print("Accuracy: {}".format(report['accuracy']))
-    print("MCC: {}".format(report['mcc']))
-    print("Confusion Matrix:")
-    print(report['confusion_matrix'])
-    print("Selected Features: {}".format([str(x) for x in report['selected_features']]))
-
-
+    for key, params in TEST_PARAMS.items():
+        print("\n\nRunning test '{}'...".format(key))
+        model, report = learn(df, CLASSIFIER, params)
+        print_report(report)
+    
 if __name__ == '__main__':
     main()

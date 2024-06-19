@@ -7,6 +7,8 @@ from sklearn.feature_selection import SequentialFeatureSelector
 from sklearn.pipeline import make_pipeline
 from .report import *
 
+KFOLD_N_SPLITS = 5
+
 def prepare_data(df, columns, classifier):
     # Build subset of dataframe
     subset = columns.copy()
@@ -38,7 +40,7 @@ def test_model(clf, X_test, y_test):
         'confusion_matrix': build_confusion_matrix(clf, X_test, y_test),
     }
 
-def learn(df, classifier, model_params):
+def learn(df, classifier, param_grid):
     feature_names = []
     for column in df.columns:
         if column != classifier and column != 'Unnamed: 0':
@@ -48,25 +50,46 @@ def learn(df, classifier, model_params):
     feature_names = np.array(feature_names)
 
     # Split the data set into training and testing
-#       X_train, X_test, y_train, y_test = train_test_split(X, y, 
-#        test_size=0.3, random_state=0)
+    print(" - Splitting the data into training and testing set...")
+    X_train, X_test, y_train, y_test = train_test_split(X, y, 
+        test_size=0.33, random_state=42)
+
+    # Perform grid-search
+    print(" - Performing grid search to find optimal parameters...")
+    scorer = make_scorer(matthews_corrcoef)
+    clf_svm = svm.SVC()
+    clf_gs = GridSearchCV(
+        estimator=clf_svm, 
+        param_grid=param_grid, 
+        scoring=scorer, 
+        refit=True,
+        cv=KFOLD_N_SPLITS
+    )
+    clf_gs.fit(X_train, y_train)
+
+    # Rebuild SVM with best parameters
+    best_params = clf_gs.best_estimator_.get_params()
+    clf_best_svm = clf_svm.set_params(**best_params)
 
     # Perform Sequence feature selection
-    scorer = make_scorer(matthews_corrcoef)
-    clf_svm = svm.SVC(**model_params)
+    print(" - Performing sequential feature selection to find optimal features...")
     clf_sfs = SequentialFeatureSelector(
-        clf_svm,
+        clf_best_svm,
         scoring = scorer,
-        n_jobs = -1 # Use all processors
+        cv = KFOLD_N_SPLITS,
+        #n_jobs = -1 # Use all processors
     )
-    clf_sfs.fit(X, y)
+    clf_sfs.fit(X_train, y_train)
 
     good_features = list(feature_names[clf_sfs.get_support()])
 
     # Test the new model
-    X, y = prepare_data(df, good_features, classifier)
-    clf_svm = svm.SVC(**model_params).fit(X, y)
-    report = test_model(clf_svm, X, y)
+    print(" - Testing model on test set...")
+    X_train = X_train[:,clf_sfs.get_support()]
+    X_test = X_test[:,clf_sfs.get_support()]
+    clf_svm = svm.SVC(**best_params).fit(X_train, y_train)
+    report = test_model(clf_svm, X_test, y_test)
     report['selected_features'] = good_features
+    report['best_params'] = best_params
     return clf_svm, report
 
