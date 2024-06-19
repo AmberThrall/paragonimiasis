@@ -1,9 +1,13 @@
 import pandas as pd
 import numpy as np
 from sklearn import svm
-from sklearn.metrics import confusion_matrix, matthews_corrcoef
+from sklearn.metrics import confusion_matrix, matthews_corrcoef, make_scorer
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.feature_selection import SequentialFeatureSelector
+from sklearn.pipeline import make_pipeline
+from .report import *
 
-def build_svm(df, columns, classifier, model_params={}):
+def prepare_data(df, columns, classifier):
     # Build subset of dataframe
     subset = columns.copy()
     subset.append(classifier)
@@ -14,10 +18,9 @@ def build_svm(df, columns, classifier, model_params={}):
     
     # Construct SVM data table and classifier array
     X = df_hot_encoded[df_hot_encoded.columns[df_hot_encoded.columns!=classifier]].values
-    y_true = df_hot_encoded[classifier].values
+    y = df_hot_encoded[classifier].values
 
-    clf = svm.SVC(**model_params).fit(X, y_true)
-    return clf, X, y_true
+    return X, y
 
 def mcc(clf, X_test, y_test):
     y_pred = clf.predict(X_test)
@@ -36,15 +39,34 @@ def test_model(clf, X_test, y_test):
     }
 
 def learn(df, classifier, model_params):
-    report = Report(df.columns, classifier)
+    feature_names = []
+    for column in df.columns:
+        if column != classifier and column != 'Unnamed: 0':
+            feature_names.append(column)
 
-    kept_features = ['Sex_of_the_study_participant']
-    remaining_features = report._columns
+    X, y = prepare_data(df, feature_names, classifier)
+    feature_names = np.array(feature_names)
 
-    clf, X, y_true = build_svm(df, kept_features, classifier, model_params)
-    result = test_model(clf, X, y_true)
-    report.record(cols, result)
+    # Split the data set into training and testing
+#       X_train, X_test, y_train, y_test = train_test_split(X, y, 
+#        test_size=0.3, random_state=0)
 
-    return report
+    # Perform Sequence feature selection
+    scorer = make_scorer(matthews_corrcoef)
+    clf_svm = svm.SVC(**model_params)
+    clf_sfs = SequentialFeatureSelector(
+        clf_svm,
+        scoring = scorer,
+        n_jobs = -1 # Use all processors
+    )
+    clf_sfs.fit(X, y)
 
+    good_features = list(feature_names[clf_sfs.get_support()])
+
+    # Test the new model
+    X, y = prepare_data(df, good_features, classifier)
+    clf_svm = svm.SVC(**model_params).fit(X, y)
+    report = test_model(clf_svm, X, y)
+    report['selected_features'] = good_features
+    return clf_svm, report
 

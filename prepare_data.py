@@ -92,6 +92,9 @@ def main():
     # Drop rows with NA entries
     df = df.dropna(how='any').copy()
 
+    # One-Hot Encode categorical data
+    df = pd.get_dummies(df)
+
     # Save the result
     df.to_csv('prepared_data.csv')
 
