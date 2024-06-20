@@ -66,8 +66,10 @@ def strip_whitespace(x):
     return x
     
 def convert_binary(x):
-    one_values = ['Yes', 'Positive', 'Married', 'Yes Currently on ATT']
-    zero_values = ['No', 'Negative', 'Unmarried']
+    #one_values = ['Yes', 'Positive', 'Married', 'Yes Currently on ATT']
+    #zero_values = ['No', 'Negative', 'Unmarried']
+    one_values = ['Positive']
+    zero_values = ['Negative']
     if x in one_values:
         return 1
     elif x in zero_values:

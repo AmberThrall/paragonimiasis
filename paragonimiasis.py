@@ -9,6 +9,12 @@ TEST_PARAMS = {
         'kernel': ['rbf'],  
         'gamma': np.linspace(0.001, 0.01, num=10),
     }],
+    'poly': [{ 
+        'C': np.linspace(1, 25, num=6), 
+        'kernel': ['poly'],  
+        'gamma': np.linspace(0.001, 0.01, num=10),
+        #'coef0': [ -1.0, -0.5, 0, 0.5, 1.0 ]
+    }],
 }
 
 def print_report(report):
