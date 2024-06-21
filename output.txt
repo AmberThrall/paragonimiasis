@@ -10,32 +10,30 @@ Running test 'linear'...
 -------
 Report:
 -------
-Accuracy: 0.9679529103989536
-MCC: 0.0
+Accuracy: 0.9224983649444081
+MCC: -0.014387077551996474
 Confusion Matrix:
-[[1. 0.]
- [1. 0.]]
+[[0.95202703 0.04797297]
+ [0.96938776 0.03061224]]
 Selected Parameters:
-C                             1.0
-break_ties                  False
-cache_size                    200
-class_weight                 None
-coef0                         0.0
-decision_function_shape       ovr
-degree                          3
-gamma                       scale
-kernel                     linear
-max_iter                       -1
-probability                 False
-random_state                 None
-shrinking                    True
-tol                         0.001
-verbose                     False
+C                               5.8
+break_ties                    False
+cache_size                      200
+class_weight               balanced
+coef0                           0.0
+decision_function_shape         ovr
+degree                            3
+gamma                         scale
+kernel                       linear
+max_iter                         -1
+probability                   False
+random_state                   None
+shrinking                      True
+tol                           0.001
+verbose                       False
 dtype: object
 Selected Parameters:
- - Age_of_the_study_participant
  - Height_of_the_study_participant_in_Cms
- - Weight_of_the_study_participant_in_Kgs
  - Sex_of_the_study_participant_Female
  - Sex_of_the_study_participant_Male
  - Sex_of_the_study_participant_Transgender
@@ -45,28 +43,30 @@ Selected Parameters:
  - Religion_of_the_participant_Islam
  - Educational_qualification_of_the_study_participant_Graduate/Degree/Diploma
  - Educational_qualification_of_the_study_participant_Illiterate
- - Educational_qualification_of_the_study_participant_Post-graduate
- - Educational_qualification_of_the_study_participant_Secondary
- - Occupation_of_the_study_participant_Agri. Laborer
- - Occupation_of_the_study_participant_Construction laborer
- - Occupation_of_the_study_participant_Forest products
  - Occupation_of_the_study_participant_MNREGA work only
- - Occupation_of_the_study_participant_Own cultivation and laborer
- - Occupation_of_the_study_participant_Small business/Petti/Tea shop
- - Occupation_of_the_study_participant_Student
- - Which_health_facility_do_you_access_when_you_are_sick_Government
  - Which_health_facility_do_you_access_when_you_are_sick_Health centers run by NGO
- - Which_health_facility_do_you_access_when_you_are_sick_Private
  - Which_health_facility_do_you_access_when_you_are_sick_Self-treatment
  - Which_health_facility_do_you_access_when_you_are_sick_Traditional healer
- - Have_you_had_Cough_No
- - Have_you_had_Cough_Yes
  - Have_you_had_Expectoration_No
  - Have_you_had_Expectoration_Yes
- - Have_you_had_Chest_pain_No
- - Have_you_had_Chest_pain_Yes
  - Have_you_had_fever_No
  - Have_you_had_fever_Yes
+ - Have_you_had_blood_in_sputum_No
+ - Have_you_had_blood_in_sputum_Yes
+ - Other_symptoms_No
+ - Other_symptoms_Yes
+ - Have_you_taken_any_treatment_or_actions_No
+ - Have_you_taken_any_treatment_or_actions_Yes
+ - Have_you_ever_been_treated_for_TB_No
+ - Have_you_ever_been_treated_for_TB_Yes Currently on ATT
+ - Consumption_of_fresh_water_crabs_Yes
+ - Raw_fresh_water_crabs_No
+ - Smoked_fresh_water_crabs_No
+ - Smoked_fresh_water_crabs_Yes
+ - Cooked_fresh_water_crabs_No
+ - Cooked_fresh_water_crabs_Yes
+ - Consumption_of_cray_fishes_No
+ - Consumption_of_wlid_boar_meat_No
 
 
 Running test 'rbf'...
@@ -78,27 +78,27 @@ Running test 'rbf'...
 -------
 Report:
 -------
-Accuracy: 0.9672988881621976
-MCC: -0.004654848012384008
+Accuracy: 0.94865925441465
+MCC: 0.09717225992603795
 Confusion Matrix:
-[[9.99324324e-01 6.75675676e-04]
- [1.00000000e+00 0.00000000e+00]]
+[[0.97635135 0.02364865]
+ [0.8877551  0.1122449 ]]
 Selected Parameters:
-C                            5.8
-break_ties                 False
-cache_size                   200
-class_weight                None
-coef0                        0.0
-decision_function_shape      ovr
-degree                         3
-gamma                      0.008
-kernel                       rbf
-max_iter                      -1
-probability                False
-random_state                None
-shrinking                   True
-tol                        0.001
-verbose                    False
+C                                    1.0
+break_ties                         False
+cache_size                           200
+class_weight               {0: 1, 1: 10}
+coef0                                0.0
+decision_function_shape              ovr
+degree                                 3
+gamma                              0.002
+kernel                               rbf
+max_iter                              -1
+probability                        False
+random_state                        None
+shrinking                           True
+tol                                0.001
+verbose                            False
 dtype: object
 Selected Parameters:
  - Age_of_the_study_participant
@@ -112,16 +112,11 @@ Selected Parameters:
  - Religion_of_the_participant_Hindu
  - Religion_of_the_participant_Islam
  - Educational_qualification_of_the_study_participant_Graduate/Degree/Diploma
- - Educational_qualification_of_the_study_participant_Illiterate
  - Educational_qualification_of_the_study_participant_Post-graduate
  - Educational_qualification_of_the_study_participant_Secondary
  - Occupation_of_the_study_participant_Agri. Laborer
  - Occupation_of_the_study_participant_Construction laborer
- - Occupation_of_the_study_participant_Forest products
- - Occupation_of_the_study_participant_MNREGA work only
- - Occupation_of_the_study_participant_Own cultivation and laborer
  - Occupation_of_the_study_participant_Small business/Petti/Tea shop
- - Occupation_of_the_study_participant_Student
  - Which_health_facility_do_you_access_when_you_are_sick_Government
  - Which_health_facility_do_you_access_when_you_are_sick_Health centers run by NGO
  - Which_health_facility_do_you_access_when_you_are_sick_Private
@@ -129,12 +124,17 @@ Selected Parameters:
  - Which_health_facility_do_you_access_when_you_are_sick_Traditional healer
  - Have_you_had_Cough_No
  - Have_you_had_Cough_Yes
- - Have_you_had_Expectoration_No
- - Have_you_had_Expectoration_Yes
- - Have_you_had_Chest_pain_No
- - Have_you_had_Chest_pain_Yes
  - Have_you_had_fever_No
  - Have_you_had_fever_Yes
+ - Have_you_lost_appetite_No
+ - Have_you_lost_appetite_Yes
+ - Have_you_had_blood_in_sputum_No
+ - Have_you_had_blood_in_sputum_Yes
+ - Have_you_had_night_sweats_No
+ - Have_you_lost_weight_No
+ - Have_you_lost_weight_Yes
+ - Have_you_had_shortness_of_breath_No
+ - Have_you_had_shortness_of_breath_Yes
 
 
 Running test 'poly'...

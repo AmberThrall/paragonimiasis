@@ -63,6 +63,7 @@ def learn(df, classifier, param_grid):
         param_grid=param_grid, 
         scoring=scorer, 
         refit=True,
+        #verbose = 2,
         cv=KFOLD_N_SPLITS
     )
     clf_gs.fit(X_train, y_train)
