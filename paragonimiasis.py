@@ -30,21 +30,21 @@ TEST_PARAMS = {
             {0:1, 1:50},
         ]
     }],
-    'poly': [{ 
-        'C': np.linspace(1, 25, num=6), 
-        'kernel': ['poly'],  
-        'gamma': np.linspace(0.001, 0.01, num=10),
-        #'coef0': [ -1.0, -0.5, 0, 0.5, 1.0 ]
-        'class_weight': [
-            'balanced',
-            {0:1, 1:2},
-            {0:1, 1:3},
-            {0:1, 1:4},
-            {0:1, 1:5},
-            {0:1, 1:10},
-            {0:1, 1:50},
-        ]
-    }],
+#    'poly': [{ 
+#        'C': np.linspace(1, 25, num=6), 
+#        'kernel': ['poly'],  
+#        'gamma': np.linspace(0.001, 0.01, num=10),
+#        'coef0': [ -1.0, -0.5, 0, 0.5, 1.0 ]
+#        'class_weight': [
+#            'balanced',
+#            {0:1, 1:2},
+#            {0:1, 1:3},
+#            {0:1, 1:4},
+#            {0:1, 1:5},
+#            {0:1, 1:10},
+#            {0:1, 1:50},
+#        ]
+#    }],
 }
 
 def print_report(report):
