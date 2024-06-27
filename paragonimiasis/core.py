@@ -64,6 +64,7 @@ def learn(df, classifier, param_grid):
         scoring=scorer, 
         refit=True,
         #verbose = 2,
+        n_jobs = -1, # Use all processors
         cv=KFOLD_N_SPLITS
     )
     clf_gs.fit(X_train, y_train)
@@ -78,7 +79,7 @@ def learn(df, classifier, param_grid):
         clf_best_svm,
         scoring = scorer,
         cv = KFOLD_N_SPLITS,
-        #n_jobs = -1 # Use all processors
+        n_jobs = -1 # Use all processors
     )
     clf_sfs.fit(X_train, y_train)
 

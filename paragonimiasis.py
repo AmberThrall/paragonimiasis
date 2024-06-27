@@ -32,7 +32,7 @@ TEST_PARAMS = {
         'C': np.linspace(1, 25, num=6), 
         'kernel': ['poly'],  
         'gamma': np.linspace(0.001, 0.01, num=10),
-        'coef0': [ -1.0, -0.5, 0, 0.5, 1.0 ]
+        'coef0': [ -1.0, -0.5, 0, 0.5, 1.0 ],
         'class_weight': [
             'balanced',
             {0:1, 1:2},
